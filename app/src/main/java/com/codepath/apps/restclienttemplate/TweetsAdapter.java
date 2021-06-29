@@ -2,7 +2,6 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +19,7 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
@@ -82,6 +78,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvRelativeTimestamp;
         ImageView ivMedia;
         ImageButton ibRetweet;
+        ImageButton ibLike;
 
         // itemView is a representation of one row in recycler view -> a tweet
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -92,6 +89,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvRelativeTimestamp = itemView.findViewById(R.id.tvRelativeTimestamp);
             ivMedia = itemView.findViewById(R.id.ivMedia);
             ibRetweet = itemView.findViewById(R.id.ibRetweet);
+            ibLike = itemView.findViewById(R.id.ibLike);
         }
 
         // take tweet attributes to fill out views
@@ -110,7 +108,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             }
 
             // retweet
-            Drawable drawable = AppCompatResources.getDrawable(context, R.drawable.ic_retweet_twitter);
+            Drawable drawable = AppCompatResources.getDrawable(context, R.drawable.ic_retweet_tweet);
             ibRetweet.setBackground(drawable);
             ibRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -121,6 +119,23 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     } else {
                         Log.d(TAG, "retweet");
                         ibRetweet.setSelected(true);
+                    }
+
+                }
+            });
+
+            // like
+            drawable = AppCompatResources.getDrawable(context, R.drawable.ic_heart_tweet);
+            ibLike.setBackground(drawable);
+            ibLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (ibLike.isSelected()) {
+                        Log.d(TAG, "unlike");
+                        ibLike.setSelected(false);
+                    } else {
+                        Log.d(TAG, "like");
+                        ibLike.setSelected(true);
                     }
 
                 }
