@@ -44,7 +44,11 @@ public class Tweet {
         JSONObject entities = jsonObject.getJSONObject("entities");
         if (entities.has("media")) {
             JSONArray media = entities.getJSONArray("media");
+            // FOR int i = 0; i > medialgn
             tweet.imageUrl = media.getJSONObject(0).getString("media_url_https");
+        }
+        else{
+            tweet.imageUrl = null;
         }
 
         return tweet;

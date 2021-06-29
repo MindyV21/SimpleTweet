@@ -99,7 +99,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             Glide.with(context).load(tweet.user.publicImageUrl).into(ivProfileImage);
 
             if (tweet.imageUrl == null) {
-                ivMedia.setVisibility(View.INVISIBLE);
+                ivMedia.setVisibility(View.GONE);
             } else {
                 Glide.with(context).load(tweet.imageUrl).into(ivMedia);
             }
