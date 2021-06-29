@@ -42,7 +42,6 @@ public class TimelineActivity extends AppCompatActivity {
 
     Button bLogout;
 
-    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +85,10 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
         // configure refreshing colors
-        scTweets.setColorSchemeColors(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+//        scTweets.setColorSchemeColors(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
     }
 
     public void fetchTimelineAsync(int page) {

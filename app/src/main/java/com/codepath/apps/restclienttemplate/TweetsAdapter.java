@@ -77,6 +77,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvBody;
         TextView tvScreenName;
         TextView tvRelativeTimestamp;
+        ImageView ivMedia;
 
         // itemView is a representation of one row in recycler view -> a tweet
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -85,6 +86,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvRelativeTimestamp = itemView.findViewById(R.id.tvRelativeTimestamp);
+            ivMedia = itemView.findViewById(R.id.ivMedia);
         }
 
         // take tweet attributes to fill out views
@@ -95,6 +97,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             // load in profile image with glide
             Glide.with(context).load(tweet.user.publicImageUrl).into(ivProfileImage);
+
+            if (tweet.imageUrl == null) {
+                ivMedia.setVisibility(View.INVISIBLE);
+            } else {
+                Glide.with(context).load(tweet.imageUrl).into(ivMedia);
+            }
         }
     }
 }
