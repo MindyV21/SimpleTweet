@@ -65,7 +65,7 @@ public class ComposeActivity extends AppCompatActivity {
                 client.postTweet(tweetContent, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
-                        Log.i(TAG, "onSuccess!" + json.toString());
+                        Log.i(TAG, "onSuccess to publish tweet");
                         // compose the new tweet onto the main activity
                         try {
                             Tweet newTweet = Tweet.fromJson(json.jsonObject);
@@ -85,7 +85,7 @@ public class ComposeActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                        Log.e(TAG, "onFailure!", throwable);
+                        Log.e(TAG, "onFailure to publish tweet", throwable);
                     }
                 });
             }
