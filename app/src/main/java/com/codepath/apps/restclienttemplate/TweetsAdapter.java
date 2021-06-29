@@ -1,15 +1,18 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -78,6 +81,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvRelativeTimestamp;
         ImageView ivMedia;
+        ImageButton ibRetweet;
 
         // itemView is a representation of one row in recycler view -> a tweet
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -87,6 +91,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvRelativeTimestamp = itemView.findViewById(R.id.tvRelativeTimestamp);
             ivMedia = itemView.findViewById(R.id.ivMedia);
+            ibRetweet = itemView.findViewById(R.id.ibRetweet);
         }
 
         // take tweet attributes to fill out views
@@ -103,6 +108,23 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             } else {
                 Glide.with(context).load(tweet.imageUrl).into(ivMedia);
             }
+
+            // retweet
+            Drawable drawable = AppCompatResources.getDrawable(context, R.drawable.ic_retweet_twitter);
+            ibRetweet.setBackground(drawable);
+            ibRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (ibRetweet.isSelected()) {
+                        Log.d(TAG, "un retweet");
+                        ibRetweet.setSelected(false);
+                    } else {
+                        Log.d(TAG, "retweet");
+                        ibRetweet.setSelected(true);
+                    }
+
+                }
+            });
         }
     }
 }
