@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,7 @@ import okhttp3.Headers;
 public class TimelineActivity extends AppCompatActivity {
 
     public static final String TAG = "TimelineActivity";
+    private final int REQUEST_CODE = 20;
 
     TwitterClient client;
     RecyclerView rvTweets;
@@ -82,13 +84,32 @@ public class TimelineActivity extends AppCompatActivity {
             // compose icon has been selected
             // navigate to compose activity
             Intent intent = new Intent(this, ComposeActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CODE);
             // true to consume menu item selected
             return true;
         }
 
         // true to consume menu item selected
         return super.onOptionsItemSelected(item);
+    }
+
+    // when a tweet is sent back as a result is created, INSERT a new tweet into arraylist
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        // check request code and result code
+        if (requestCode != REQUEST_CODE && resultCode != RESULT_OK) {
+            Log.e(TAG, "posting tweet unsuccessful");
+            return;
+        }
+        // use data parameter
+        Tweet tweet = (Tweet) data.getSerializableExtra("tweet");
+
+        // update timeline with new tweet
+        tweets.add(0, tweet);
+        adapter.notifyItemInserted(0);
+        rvTweets.scrollToPosition(0);
+
+//        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // getting the home time line
