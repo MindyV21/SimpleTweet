@@ -26,7 +26,7 @@ public class ComposeActivity extends AppCompatActivity {
     TwitterClient client;
 
     public static final String TAG = "ComposeActivity";
-    public static final int MAX_TWEET_LENGTH = 140;
+    public static final int MAX_TWEET_LENGTH = 280;
     private final int REQUEST_CODE = 20;
 
     TextInputLayout tilCompose;

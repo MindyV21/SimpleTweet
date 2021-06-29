@@ -4,7 +4,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +33,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
+    private SwipeRefreshLayout scTweets;
 
     TwitterClient client;
     RecyclerView rvTweets;
@@ -39,6 +42,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     Button bLogout;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +71,53 @@ public class TimelineActivity extends AppCompatActivity {
                 client.clearAccessToken();
                 // pop stack, navigating backwards to login screen
                 finish();
+            }
+        });
+
+        // lookup the swipe container view
+        scTweets = (SwipeRefreshLayout) findViewById(R.id.scTweets);
+        // setup refresh listener which triggers new data loading
+        scTweets.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // code to refresh list
+                // call scTweets.setRefreshing(false) once network request has completed successfully
+                fetchTimelineAsync(0);
+            }
+        });
+        // configure refreshing colors
+        scTweets.setColorSchemeColors(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
+
+    public void fetchTimelineAsync(int page) {
+        // send network request to fetch updated date
+        // client here is an instance of AAndroid Async HTTP
+        // getHomeTimeline is an example endpoint
+        client.getHomeTimeline(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d(TAG, "onSuccess retrieved new home timeline");
+                // clear out all home timeline
+                adapter.clear();
+
+                try {
+                    // new data has come back, add items to adapter
+                    adapter.addAll(Tweet.fromJsonArray(json.jsonArray));
+                    // signal refresh has finished
+                    scTweets.setRefreshing(false);
+                    Log.d(TAG, "replaced old home tl with refreshed one");
+                } catch (JSONException e) {
+                    Log.e(TAG, "failed to add tweets to tl after composing " + e.toString());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "onFailure to retrieve home timeline " + throwable);
             }
         });
     }
