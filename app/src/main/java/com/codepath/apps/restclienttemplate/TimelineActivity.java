@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +42,7 @@ public class TimelineActivity extends AppCompatActivity {
     TweetsAdapter adapter;
 
     Button bLogout;
+    FloatingActionButton fabCompose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,9 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         client = TwitterApp.getRestClient(this);
+
+        // init/find things
+        fabCompose = findViewById(R.id.fabCompose);
 
         // find recycler view
         rvTweets = findViewById(R.id.rvTweets);
@@ -89,6 +94,18 @@ public class TimelineActivity extends AppCompatActivity {
 //                android.R.color.holo_green_light,
 //                android.R.color.holo_orange_light,
 //                android.R.color.holo_red_light);
+
+        // set up fabCompose
+        fabCompose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // compose icon has been selected
+                Log.d(TAG, "compose a tweet clicked");
+                // navigate to compose activity
+                Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
     }
 
     public void fetchTimelineAsync(int page) {
@@ -176,6 +193,7 @@ public class TimelineActivity extends AppCompatActivity {
                 JSONArray jsonArray = json.jsonArray;
                 try {
                     tweets.addAll(Tweet.fromJsonArray(jsonArray));
+                    Log.d("mindy", "tweet " + tweets.get(0).id);
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     Log.e(TAG, "Json exception", e);

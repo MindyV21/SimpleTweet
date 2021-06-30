@@ -16,15 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import okhttp3.Headers;
+
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
     public static final String TAG = "TweetsAdapter";
 
+    TwitterClient client;
     Context context;
     List<Tweet> tweets;
     // pass in the context and list of tweets
@@ -100,7 +104,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         }
 
         // take tweet attributes to fill out views
-        public void bind(Tweet tweet) {
+        public void bind(final Tweet tweet) {
             tvBody.setText(tweet.body);
             tvScreenName.setText("@" + tweet.user.screenName);
             tvRelativeTimestamp.setText(Tweet.getRelativeTimestamp(tweet.createdAt));
@@ -126,12 +130,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ibRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d("mindy", "adapter "+tweet.id);
                     if (ibRetweet.isSelected()) {
                         Log.d(TAG, "un retweet");
-                        ibRetweet.setSelected(false);
+                        unretweetTweet(tweet.id);
                     } else {
                         Log.d(TAG, "retweet");
-                        ibRetweet.setSelected(true);
+                        retweetTweet(tweet.id);
                     }
 
                 }
@@ -159,6 +164,38 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
                 }
             });
+        }
+
+        public void retweetTweet(String id) {
+            client = TwitterApp.getRestClient(context);
+            client.retweetTweet(id, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    Log.d(TAG, "OnSuccess! Twitter retweet api call: " + json.toString());
+                }
+
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Log.e(TAG, "OnFailure! Twitter retweet api call: " + response, throwable);
+                }
+            });
+            ibRetweet.setSelected(true);
+        }
+
+        public void unretweetTweet(String id) {
+            client = TwitterApp.getRestClient(context);
+            client.unretweetTweet(id, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    Log.d(TAG, "OnSuccess! Twitter unretweet api call: " + json.toString());
+                }
+
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Log.e(TAG, "OnFailure! Twitter unretweet api call: " + response, throwable);
+                }
+            });
+            ibRetweet.setSelected(false);
         }
     }
 }
