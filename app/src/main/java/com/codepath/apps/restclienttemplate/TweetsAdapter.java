@@ -77,8 +77,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvRelativeTimestamp;
         ImageView ivMedia;
+
+        // bottom icons
         ImageButton ibRetweet;
         ImageButton ibLike;
+        TextView tvRetweets;
+        TextView tvLikes;
 
         // itemView is a representation of one row in recycler view -> a tweet
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -88,14 +92,17 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvRelativeTimestamp = itemView.findViewById(R.id.tvRelativeTimestamp);
             ivMedia = itemView.findViewById(R.id.ivMedia);
+
             ibRetweet = itemView.findViewById(R.id.ibRetweet);
             ibLike = itemView.findViewById(R.id.ibLike);
+            tvRetweets = itemView.findViewById(R.id.tvRetweets);
+            tvLikes = itemView.findViewById(R.id.tvLikes);
         }
 
         // take tweet attributes to fill out views
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
-            tvScreenName.setText(tweet.user.screenName);
+            tvScreenName.setText("@" + tweet.user.screenName);
             tvRelativeTimestamp.setText(Tweet.getRelativeTimestamp(tweet.createdAt));
 
             // load in profile image with glide
@@ -108,8 +115,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             }
 
             // retweet
+            tvRetweets.setText("" + tweet.retweetCount);
             Drawable drawable = AppCompatResources.getDrawable(context, R.drawable.ic_retweet_tweet);
             ibRetweet.setBackground(drawable);
+            if (tweet.isRetweeted) {
+                ibRetweet.setSelected(true);
+            } else {
+                ibRetweet.setSelected(false);
+            }
             ibRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -125,8 +138,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             });
 
             // like
+            tvLikes.setText("" + tweet.favoriteCount);
             drawable = AppCompatResources.getDrawable(context, R.drawable.ic_heart_tweet);
             ibLike.setBackground(drawable);
+            if (tweet.isFavorited) {
+                ibLike.setSelected(true);
+            } else {
+                ibLike.setSelected(false);
+            }
             ibLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

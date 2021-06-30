@@ -24,6 +24,12 @@ public class Tweet {
     public User user;
     public String imageUrl;
 
+    // TODO: retweet count, already retweeted, favorited count, already favorited
+    public int retweetCount;
+    public boolean isRetweeted;
+    public int favoriteCount;
+    public boolean isFavorited;
+
     // time constants
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
@@ -50,6 +56,12 @@ public class Tweet {
         else{
             tweet.imageUrl = null;
         }
+
+        // retweets and favorites data
+        tweet.retweetCount = jsonObject.getInt("retweet_count");
+        tweet.isRetweeted = jsonObject.getBoolean("retweeted");
+        tweet.favoriteCount = jsonObject.getInt("favorite_count");
+        tweet.isFavorited = jsonObject.getBoolean("favorited");
 
         return tweet;
     }

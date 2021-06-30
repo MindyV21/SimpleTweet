@@ -72,6 +72,26 @@
         android:layout_below="@+id/ivMedia"
         android:layout_marginStart="100dp"
         android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/ibRetweet"
+        android:layout_toEndOf="@+id/tvRetweets"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvRetweets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivMedia"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/ibRetweet"
+        android:text="5" />
+
+    <TextView
+        android:id="@+id/tvLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivMedia"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/ibLike"
+        android:text="20" />
 </RelativeLayout>
