@@ -130,7 +130,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ibRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("mindy", "adapter "+tweet.id);
                     if (ibRetweet.isSelected()) {
                         Log.d(TAG, "un retweet");
                         unretweetTweet(tweet.id);
@@ -156,10 +155,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 public void onClick(View view) {
                     if (ibLike.isSelected()) {
                         Log.d(TAG, "unlike");
-                        ibLike.setSelected(false);
+                        unfavoriteTweet(tweet.id);
                     } else {
                         Log.d(TAG, "like");
-                        ibLike.setSelected(true);
+                        favoriteTweet(tweet.id);
                     }
 
                 }
@@ -196,6 +195,38 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 }
             });
             ibRetweet.setSelected(false);
+        }
+
+        public void favoriteTweet(String id) {
+            client = TwitterApp.getRestClient(context);
+            client.favoriteTweet(id, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    Log.d(TAG, "OnSuccess! Twitter favorite api call: " + json.toString());
+                }
+
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Log.e(TAG, "OnFailure! Twitter favorite api call: " + response, throwable);
+                }
+            });
+            ibLike.setSelected(true);
+        }
+
+        public void unfavoriteTweet(String id) {
+            client = TwitterApp.getRestClient(context);
+            client.unfavoriteTweet(id, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    Log.d(TAG, "OnSuccess! Twitter unfavorite api call: " + json.toString());
+                }
+
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Log.e(TAG, "OnFailure! Twitter unfavorite api call: " + response, throwable);
+                }
+            });
+            ibLike.setSelected(false);
         }
     }
 }

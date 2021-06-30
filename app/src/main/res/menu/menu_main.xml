@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/compose"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:title="Compose"
+        android:id="@+id/logout"
+        android:icon="@android:drawable/dialog_holo_light_frame"
+        android:title="Logout"
         app:showAsAction="always" />
 </menu>

@@ -41,7 +41,6 @@ public class TimelineActivity extends AppCompatActivity {
     List<Tweet> tweets;
     TweetsAdapter adapter;
 
-    Button bLogout;
     FloatingActionButton fabCompose;
 
     @Override
@@ -63,20 +62,6 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
         populateHomeTimeline();
-
-        // TODO: put logout button in navigational side drawer
-        // find and set up logout button
-        bLogout = findViewById(R.id.btnLogout);
-        bLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i(TAG, "User logged out");
-                // forget who is logged in
-                client.clearAccessToken();
-                // pop stack, navigating backwards to login screen
-                finish();
-            }
-        });
 
         // lookup the swipe container view
         scTweets = (SwipeRefreshLayout) findViewById(R.id.scTweets);
@@ -148,11 +133,12 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.compose) {
-            // compose icon has been selected
-            // navigate to compose activity
-            Intent intent = new Intent(this, ComposeActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
+        if (item.getItemId() == R.id.logout) {
+            Log.i(TAG, "User logged out");
+            // forget who is logged in
+            client.clearAccessToken();
+            // pop stack, navigating backwards to login screen
+            finish();
             // true to consume menu item selected
             return true;
         }
@@ -193,7 +179,6 @@ public class TimelineActivity extends AppCompatActivity {
                 JSONArray jsonArray = json.jsonArray;
                 try {
                     tweets.addAll(Tweet.fromJsonArray(jsonArray));
-                    Log.d("mindy", "tweet " + tweets.get(0).id);
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     Log.e(TAG, "Json exception", e);

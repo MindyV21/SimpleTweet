@@ -73,7 +73,6 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("id", id);
 		params.put("trim_user", 1);
-		Log.d(TAG, "" + id);
 		client.post(apiUrl, params, "", handler);
 	}
 
@@ -82,7 +81,20 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("id", id);
 		params.put("trim_user", 1);
-		Log.d("mindy", "client " + id);
+		client.post(apiUrl, params, "", handler);
+	}
+
+	public void favoriteTweet(String id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("favorites/create.json");
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		client.post(apiUrl, params, "", handler);
+	}
+
+	public void unfavoriteTweet(String id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("favorites/destroy.json");
+		RequestParams params = new RequestParams();
+		params.put("id", id);
 		client.post(apiUrl, params, "", handler);
 	}
 }
