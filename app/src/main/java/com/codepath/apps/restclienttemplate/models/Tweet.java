@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate.models;
 
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,9 +24,12 @@ public class Tweet {
     public String body;
     public String createdAt;
     public User user;
+
+    // situational
+    public String retweetUserName;
+    public boolean hasRetweetText;
     public String imageUrl;
 
-    // TODO: retweet count, already retweeted, favorited count, already favorited
     public int retweetCount;
     public boolean isRetweeted;
     public int favoriteCount;
@@ -43,6 +47,25 @@ public class Tweet {
     // turn json into Tweet object
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
+
+        // check if tweet was retweeted by another user
+        if (jsonObject.has("retweeted_status")) {
+            JSONObject retweetedJsonObject = jsonObject.getJSONObject("retweeted_status");
+            Log.i(TAG, "Tweet was retweeted " + retweetedJsonObject.toString());
+            populateTweet(tweet, retweetedJsonObject);
+            tweet.hasRetweetText = true;
+            tweet.retweetUserName = User.fromJson(jsonObject.getJSONObject("user")).name;
+        } else {
+            populateTweet(tweet, jsonObject);
+            tweet.hasRetweetText = false;
+            tweet.retweetUserName = null;
+        }
+
+        return tweet;
+    }
+
+    // fills in tweet data
+    public static void populateTweet(Tweet tweet, JSONObject jsonObject) throws JSONException {
         tweet.id = jsonObject.getString("id_str");
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = jsonObject.getString("created_at");
@@ -64,8 +87,6 @@ public class Tweet {
         tweet.isRetweeted = jsonObject.getBoolean("retweeted");
         tweet.favoriteCount = jsonObject.getInt("favorite_count");
         tweet.isFavorited = jsonObject.getBoolean("favorited");
-
-        return tweet;
     }
 
     // return a list of tweet objects from a json array

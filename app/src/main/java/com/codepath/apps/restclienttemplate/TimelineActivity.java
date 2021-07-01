@@ -2,12 +2,14 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -81,6 +83,8 @@ public class TimelineActivity extends AppCompatActivity {
 //                android.R.color.holo_red_light);
 
         // set up fabCompose
+//        Drawable drawable = AppCompatResources.getDrawable(this, R.drawable.vector_compose_dm_shortcut);
+//        fabCompose.setBackground(drawable);
         fabCompose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

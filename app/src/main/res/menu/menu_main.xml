@@ -3,8 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/twitterIcon"
+        android:icon="@drawable/ic_launcher_twitter_round"
+        android:orderInCategory="100"
+        android:title="Icon"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/logout"
-        android:icon="@android:drawable/dialog_holo_light_frame"
+        android:orderInCategory="200"
         android:title="Logout"
         app:showAsAction="always" />
 </menu>

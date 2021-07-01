@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -76,10 +77,19 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     // define a viewholder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        // main tweet content
         ImageView ivProfileImage;
         TextView tvBody;
         TextView tvScreenName;
+        TextView tvName;
         TextView tvRelativeTimestamp;
+
+        // above retweet details - situational
+        RelativeLayout rlAbove;
+        ImageView ivRetweeted;
+        TextView tvRetweeted;
+
+        // media content of tweet
         ImageView ivMedia;
 
         // bottom icons
@@ -94,7 +104,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
+            tvName = itemView.findViewById(R.id.tvName);
             tvRelativeTimestamp = itemView.findViewById(R.id.tvRelativeTimestamp);
+
+            rlAbove = itemView.findViewById(R.id.rlAbove);
+            ivRetweeted = itemView.findViewById(R.id.ivRetweeted);
+            tvRetweeted = itemView.findViewById(R.id.tvRetweeted);
+
             ivMedia = itemView.findViewById(R.id.ivMedia);
 
             ibRetweet = itemView.findViewById(R.id.ibRetweet);
@@ -105,22 +121,36 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         // take tweet attributes to fill out views
         public void bind(final Tweet tweet) {
+            Drawable drawable = AppCompatResources.getDrawable(context, R.drawable.ic_vector_retweet_stroke);
+
+            // ABOVE TWEET - IF RETWEETED
+            if (tweet.hasRetweetText) {
+                ivRetweeted.setImageDrawable(drawable);
+                tvRetweeted.setText(tweet.retweetUserName + " Retweeted");
+            } else {
+                rlAbove.setVisibility(View.GONE);
+            }
+
+            // MAIN TWEET CONTENT
             tvBody.setText(tweet.body);
             tvScreenName.setText("@" + tweet.user.screenName);
+            tvName.setText(tweet.user.name);
             tvRelativeTimestamp.setText(Tweet.getRelativeTimestamp(tweet.createdAt));
 
             // load in profile image with glide
             Glide.with(context).load(tweet.user.publicImageUrl).into(ivProfileImage);
 
+            // MEDIA CONTENT
             if (tweet.imageUrl == null) {
                 ivMedia.setVisibility(View.GONE);
             } else {
                 Glide.with(context).load(tweet.imageUrl).into(ivMedia);
             }
 
+            // BOTTOM ICONS
             // retweet
             tvRetweets.setText("" + tweet.retweetCount);
-            Drawable drawable = AppCompatResources.getDrawable(context, R.drawable.ic_retweet_tweet);
+            drawable = AppCompatResources.getDrawable(context, R.drawable.ic_retweet_tweet);
             ibRetweet.setBackground(drawable);
             if (tweet.isRetweeted) {
                 ibRetweet.setSelected(true);
