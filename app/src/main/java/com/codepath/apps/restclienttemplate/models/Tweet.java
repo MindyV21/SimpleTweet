@@ -67,9 +67,6 @@ public class Tweet {
             populateReplyData(tweet,jsonObject);
         }
 
-        // check if tweet is a reply to another tweet
-
-
         return tweet;
     }
 
