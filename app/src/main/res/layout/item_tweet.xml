@@ -100,10 +100,31 @@
             tools:text=" - 8m" />
 
         <TextView
-            android:id="@+id/tvBody"
+            android:id="@+id/tvReply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rlStatus"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/ivProfileImage"
+            tools:text="Replying to @mndyvart" />
+
+        <Button
+            android:id="@+id/btnShowThread"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@+id/rlReact"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/ivProfileImage"
+            android:background="@color/material_on_background_disabled"
+            android:textColor="@color/twitter_blue"
+            tools:text="Show this thread" />
+
+        <TextView
+            android:id="@+id/tvBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvReply"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/ivProfileImage"
@@ -120,10 +141,12 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <RelativeLayout
+            android:id="@+id/rlReact"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivMedia"
             android:layout_toEndOf="@+id/ivProfileImage">
+
             <ImageButton
                 android:id="@+id/ibRetweet"
                 android:layout_width="20dp"
@@ -138,7 +161,7 @@
                 android:layout_height="20dp"
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="5dp"
-                android:layout_toEndOf="@+id/tvRetweets"
+                android:layout_toEndOf="@+id/ibRetweet"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -85,8 +86,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvName;
         TextView tvRelativeTimestamp;
 
+        // reply features
+        TextView tvReply;
+        Button btnShowThread;
+
         // above retweet details - situational
-        RelativeLayout rlAbove;
+        RelativeLayout rlRetweeted;
         ImageView ivRetweeted;
         TextView tvRetweeted;
 
@@ -107,8 +112,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvName = itemView.findViewById(R.id.tvName);
             tvRelativeTimestamp = itemView.findViewById(R.id.tvRelativeTimestamp);
+            tvReply = itemView.findViewById(R.id.tvReply);
+            btnShowThread = itemView.findViewById(R.id.btnShowThread);
 
-            rlAbove = itemView.findViewById(R.id.rlRetweeted);
+            rlRetweeted = itemView.findViewById(R.id.rlRetweeted);
             ivRetweeted = itemView.findViewById(R.id.ivRetweeted);
             tvRetweeted = itemView.findViewById(R.id.tvRetweeted);
 
@@ -129,7 +136,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ivRetweeted.setImageDrawable(drawable);
                 tvRetweeted.setText(tweet.retweetUserName + " Retweeted");
             } else {
-                rlAbove.setVisibility(View.GONE);
+                rlRetweeted.setVisibility(View.GONE);
             }
 
             // MAIN TWEET CONTENT
@@ -140,6 +147,24 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             // load in profile image with glide
             Glide.with(context).load(tweet.user.publicImageUrl).transform(new CircleCrop()).into(ivProfileImage);
+
+            // reply features
+            if (tweet.inReplytoId.equals("null")) {
+                tvReply.setVisibility(View.GONE);
+                btnShowThread.setVisibility(View.GONE);
+                tvReply.setText("");
+                btnShowThread.setText("");
+            } else {
+                tvReply.setText("Replying to @" + tweet.inReplyToScreenName);
+                btnShowThread.setText("Show this thread");
+            }
+
+            btnShowThread.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "SHOW THREADDDDd");
+                }
+            });
 
             // MEDIA CONTENT
             if (tweet.imageUrl == null) {

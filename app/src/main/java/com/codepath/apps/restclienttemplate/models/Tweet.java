@@ -26,6 +26,9 @@ public class Tweet {
     public User user;
 
     // situational
+    public String inReplyToScreenName;
+    public String inReplytoId;
+
     public String retweetUserName;
     public boolean hasRetweetText;
     public String imageUrl;
@@ -51,18 +54,33 @@ public class Tweet {
         // check if tweet was retweeted by another user
         if (jsonObject.has("retweeted_status")) {
             JSONObject retweetedJsonObject = jsonObject.getJSONObject("retweeted_status");
-            Log.i(TAG, retweetedJsonObject.getString("text"));
+            Log.i(TAG, retweetedJsonObject.toString());
             populateTweet(tweet, retweetedJsonObject);
             tweet.hasRetweetText = true;
             tweet.retweetUserName = User.fromJson(jsonObject.getJSONObject("user")).name;
+            populateReplyData(tweet, retweetedJsonObject);
         } else {
             populateTweet(tweet, jsonObject);
-            Log.i(TAG, jsonObject.getString("text"));
+            Log.i(TAG, jsonObject.toString());
             tweet.hasRetweetText = false;
             tweet.retweetUserName = null;
+            populateReplyData(tweet,jsonObject);
         }
 
+        // check if tweet is a reply to another tweet
+
+
         return tweet;
+    }
+
+    // fills in data if tweet is a reply to another tweet
+    public static void populateReplyData(Tweet tweet, JSONObject jsonObject) throws JSONException {
+        tweet.inReplytoId = jsonObject.getString("in_reply_to_status_id");
+        if (tweet.inReplytoId != null) {
+            tweet.inReplyToScreenName = jsonObject.getString("in_reply_to_screen_name");
+        } else {
+            tweet.inReplyToScreenName = null;
+        }
     }
 
     // fills in tweet data
