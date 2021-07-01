@@ -51,12 +51,13 @@ public class Tweet {
         // check if tweet was retweeted by another user
         if (jsonObject.has("retweeted_status")) {
             JSONObject retweetedJsonObject = jsonObject.getJSONObject("retweeted_status");
-            Log.i(TAG, "Tweet was retweeted " + retweetedJsonObject.toString());
+            Log.i(TAG, retweetedJsonObject.getString("text"));
             populateTweet(tweet, retweetedJsonObject);
             tweet.hasRetweetText = true;
             tweet.retweetUserName = User.fromJson(jsonObject.getJSONObject("user")).name;
         } else {
             populateTweet(tweet, jsonObject);
+            Log.i(TAG, jsonObject.getString("text"));
             tweet.hasRetweetText = false;
             tweet.retweetUserName = null;
         }

@@ -16,6 +16,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
@@ -107,7 +108,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvName = itemView.findViewById(R.id.tvName);
             tvRelativeTimestamp = itemView.findViewById(R.id.tvRelativeTimestamp);
 
-            rlAbove = itemView.findViewById(R.id.rlAbove);
+            rlAbove = itemView.findViewById(R.id.rlRetweeted);
             ivRetweeted = itemView.findViewById(R.id.ivRetweeted);
             tvRetweeted = itemView.findViewById(R.id.tvRetweeted);
 
@@ -135,10 +136,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody.setText(tweet.body);
             tvScreenName.setText("@" + tweet.user.screenName);
             tvName.setText(tweet.user.name);
-            tvRelativeTimestamp.setText(Tweet.getRelativeTimestamp(tweet.createdAt));
+            tvRelativeTimestamp.setText(" - " + Tweet.getRelativeTimestamp(tweet.createdAt));
 
             // load in profile image with glide
-            Glide.with(context).load(tweet.user.publicImageUrl).into(ivProfileImage);
+            Glide.with(context).load(tweet.user.publicImageUrl).transform(new CircleCrop()).into(ivProfileImage);
 
             // MEDIA CONTENT
             if (tweet.imageUrl == null) {
