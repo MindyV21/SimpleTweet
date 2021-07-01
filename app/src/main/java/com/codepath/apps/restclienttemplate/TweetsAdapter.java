@@ -161,12 +161,17 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ibRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int count = Integer.parseInt(tvRetweets.getText().toString());
                     if (ibRetweet.isSelected()) {
                         Log.d(TAG, "un retweet");
                         unretweetTweet(tweet.id);
+                        count--;
+                        tvRetweets.setText("" + count);
                     } else {
                         Log.d(TAG, "retweet");
                         retweetTweet(tweet.id);
+                        count++;
+                        tvRetweets.setText("" + count);
                     }
 
                 }
@@ -184,12 +189,17 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ibLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int count = Integer.parseInt(tvLikes.getText().toString());
                     if (ibLike.isSelected()) {
                         Log.d(TAG, "unlike");
                         unfavoriteTweet(tweet.id);
+                        count--;
+                        tvLikes.setText("" + count);
                     } else {
                         Log.d(TAG, "like");
                         favoriteTweet(tweet.id);
+                        count++;
+                        tvLikes.setText("" + count);
                     }
 
                 }
