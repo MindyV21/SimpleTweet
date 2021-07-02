@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -43,6 +44,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     ImageView ivBanner;
     ImageView ivProfile;
+    TextView tvScreenName;
+    TextView tvName;
+    TextView tvBody;
 
     FloatingActionButton fabCompose;
 
@@ -97,6 +101,14 @@ public class ProfileActivity extends AppCompatActivity {
 
         ivProfile = findViewById(R.id.ivProfileImageActual);
         Glide.with(this).load(user.publicImageUrl).transform(new CircleCrop()).into(ivProfile);
+
+        tvScreenName = findViewById(R.id.tvProfileScreenName);
+        tvName = findViewById(R.id.tvProfileName);
+        tvBody = findViewById(R.id.tvProfileBody);
+
+        tvScreenName.setText(user.screenName);
+        tvName.setText(user.name);
+        tvBody.setText(user.description);
     }
 
     public void fetchTimelineAsync(int page) {

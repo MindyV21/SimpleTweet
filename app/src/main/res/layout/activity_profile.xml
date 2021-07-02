@@ -26,7 +26,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:backgroundTint="#FFFFFF">
 
                 <ImageView
                     android:id="@+id/ivBanner"
@@ -41,7 +43,7 @@
                     android:id="@+id/ivProfileImageActual"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="25dp"
                     android:layout_marginTop="50dp"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
@@ -53,8 +55,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ivProfileImageActual"
+                    android:layout_alignLeft="@id/ivProfileImageActual"
+                    android:layout_marginTop="5dp"
+                    android:singleLine="true"
                     android:textColor="#00000000"
                     tools:text="mindy" />
+
+                <TextView
+                    android:id="@+id/tvProfileScreenName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvProfileName"
+                    android:layout_alignLeft="@id/ivProfileImageActual"
+                    android:layout_marginTop="5dp"
+                    android:singleLine="true"
+                    android:textColor="#00000000"
+                    tools:text="@mndyvart" />
+
+                <TextView
+                    android:id="@+id/tvProfileBody"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvProfileScreenName"
+                    android:layout_alignLeft="@id/ivProfileImageActual"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#00000000"
+                    tools:text="This is the body !" />
             </RelativeLayout>
 
             <androidx.appcompat.widget.Toolbar
